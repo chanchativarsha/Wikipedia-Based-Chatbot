@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wikipedia Chatbot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -16,11 +18,18 @@
 
     <script>
         async function sendMessage() {
-            const userInput = document.getElementById("user-input").value;
+            const userInput = document.getElementById("user-input").value.trim();
             if (!userInput) return;
 
             const chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML += `<div class='user-msg'>You: ${userInput}</div>`;
+
+            // User message
+            chatBox.innerHTML += `
+                <div class='user-msg'>
+                    <span>${userInput}</span>
+                    <img class="avatar" src="{{ url_for('static', filename='user.png') }}" alt="User">
+                </div>
+            `;
 
             document.getElementById("user-input").value = "";
 
@@ -31,7 +40,15 @@
             });
 
             const data = await res.json();
-            chatBox.innerHTML += `<div class='bot-msg'>Bot: ${data.response}</div>`;
+
+            // Bot message
+            chatBox.innerHTML += `
+                <div class='bot-msg'>
+                    <img class="avatar" src="{{ url_for('static', filename='bot.png') }}" alt="Bot">
+                    <span>${data.response}</span>
+                </div>
+            `;
+
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
